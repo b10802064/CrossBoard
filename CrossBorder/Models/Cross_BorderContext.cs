@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using cross_border.ViewModels;
 
 #nullable disable
 
@@ -215,5 +216,7 @@ namespace CrossBorder.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<cross_border.ViewModels.RegisterViewModel> RegisterViewModel { get; set; }
     }
 }

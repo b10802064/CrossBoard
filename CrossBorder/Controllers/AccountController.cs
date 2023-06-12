@@ -1,21 +1,23 @@
-﻿using CrossBorder.Models;
+﻿using CrossBorder.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using CrossBorder.ViewModels;
-using CrossBorder.Data;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+using System;
+using CrossBorder.Models;
+using cross_border.ViewModels;
 
-namespace CrossBorder.Controllers
+namespace cross_border.Controllers
 {
-    public class AccountContorller : Controller
-
+    public class AccountController : Controller
     {
         private readonly Cross_BorderContext _context;
-        public AccountContorller(Cross_BorderContext context)
+        public AccountController (Cross_BorderContext context)
         {
             _context = context;
         }
@@ -23,6 +25,7 @@ namespace CrossBorder.Controllers
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -82,16 +85,19 @@ namespace CrossBorder.Controllers
                     authProperties
                     );
 
-                return LocalRedirect("~/Reports/SalesReport");
+                return LocalRedirect("~/Products/Productmain");
             }
             return View(loginVM);
         }
+
+
 
         private async Task<ApplicationUser> AuthenticateUser(LoginViewModel loginVM)
         {
             var user = await _context.Customers.FirstOrDefaultAsync(u => u.CusdtomerName.ToUpper() == loginVM.UserName.ToUpper() && u.Password == loginVM.Password);
             if (user != null)
             {
+
                 var userInfo = new ApplicationUser
                 {
                     Name = user.CusdtomerName,
@@ -106,6 +112,47 @@ namespace CrossBorder.Controllers
             }
 
         }
+        public async Task<IActionResult> Signout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return LocalRedirect("/");
+        }
+
+
+        //註冊帳號
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel registerVM)
+        {
+            if (ModelState.IsValid)
+            {
+                //ViewModel => Data Model
+                Customer user = new Customer
+                {
+                    CustomerId = Guid.NewGuid().ToString(),
+                    CusdtomerName = registerVM.UserName,
+                    Password = registerVM.Password,
+                    Email = registerVM.Email,
+                };
+
+                _context.Customers.Add(user);
+                _context.SaveChanges();
+
+                ViewData["Title"] = "帳號註冊";
+                ViewData["Message"] = "使用者帳號註冊成功!";  //顯示訊息
+
+                return View("~/Views/Shared/ResultMessage.cshtml");
+            }
+
+            return View(registerVM);
+        }
+
 
 
     }
