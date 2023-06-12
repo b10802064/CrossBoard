@@ -3,41 +3,129 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CrossBorder</title>
+    <title>@ViewData["Title"] - cross_border</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("topCSS", required: false)
+    @RenderSection("topJS", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CrossBorder</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand ms-5"><img src="~/aa.png" style="width: 50px;" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navv navbar-nav mb-2 mb-lg-0 " id="righ">
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">MAN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">WOMAN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">KIDS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">BABY</a>
+                    </li>
 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @*已登入*@
+                        <li class="nav-item"><a href="#" class="nav-link">@User.Identity.Name</a></li>
+                        <li class="nav-item">@Html.ActionLink("登出", "SignOut","Account", null, new { @class="nav-link"})</li>
+                    }
+                    else
+                    {
+                        @*未登入*@
+                        <li class="nav-item"><a href="@Url.Action("Login", "Account")" class="nav-link">登入</a></li>
+                        <li class="nav-item"><a href="@Url.Action("Register", "Account")" class="nav-link">註冊</a></li>
+                    }
+
+                </ul>
+                <form class="d-flex justify-content-center" id="lefts" role="search">
+                    <input class="form-control " id="seachw" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-secondary " id="nore" type="submit">搜索</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="fullcolor">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <div class="footfixed">
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - CrossBorder - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                <div class="footitle">
+                    <a href="">各國連結</a>
+                </div>
+                <div class="footmenu">
+                    <a href="">台灣</a>
+                    <a href="">日本</a>
+                    <a href="">美國</a>
+                    <a href="">中國</a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                <div class="footitle">
+                    <a href="">幫助和政策</a>
+                </div>
+                <div class="footmenu">
+                    <a href="">聯絡我們</a>
+                    <a href="">媒體報導</a>
+                    <a href="">人才招募</a>
+                    <a href="">客服中心</a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                <div class="footitle">
+                    <a href="">會員中心</a>
+                </div>
+                <div class="footmenu">
+                    <a href="">加入會員</a>
+                    <a href="">登入/註冊</a>
+                    <a href="">註冊須知</a>
+                    <a href="">我的帳戶</a>
+                    <a href="">我的最愛專區</a>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                <div class="footitle">
+                    <a href="">Language</a>
+                </div>
+                <div class="footmenu">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            選擇語言
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">英文</a></li>
+                            <li><a class="dropdown-item" href="#">中文</a></li>
+                            <li><a class="dropdown-item" href="#">日文</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+        </div>
+        <div class="linebotton">
+            <p>
+                © 2023 zara. All Rights Reserved.
+            </p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -46,3 +134,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

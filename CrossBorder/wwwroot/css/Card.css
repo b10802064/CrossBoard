@@ -1,0 +1,58 @@
+﻿.card {
+    border: 5px solid #fff;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    padding:2px;
+}
+
+.headshot {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-top: 100%;
+}
+
+.card-title {
+    color: rgb(123, 122, 122);
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.card-body a h5:hover {
+    color: #989898b8;
+}
+
+.card-body .btn {
+    --bs-btn-padding-x: 0rem;
+    display: flex;
+    justify-content: center;
+    color: #4dccc5;
+}
+
+    .card-body .btn:active {
+        color: #34746b;
+    }
+
+.card-body {
+    padding: 5px;
+}
+
+    .card-body p {
+        color: #666666;
+    }
+
+.imgbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 15px;
+}

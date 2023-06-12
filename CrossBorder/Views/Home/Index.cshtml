@@ -1,8 +1,68 @@
-﻿@{
+﻿@model IEnumerable<Product>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="carouselbox d-flex justify-content-center border-dark  mb-5">
+    <div id="carouselExample" class="carousel slide w-75 " data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner overflow-hidden ">
+            <div class="carousel-item active " data-bs-interval="10000">
+                <img src="https://static.zara.net/photos///contents/mkt/spots/ss23-north-woman-party/subhome-xmedia-18//w/1138/IMAGE-portrait-ipad-fill-bcaaef03-b761-44b6-b1cb-c01bca7b8e30-default_0.jpg?ts=1682680364453"
+                     class="d-block w-100 " alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="10000">
+                <img src="https://static.zara.net/photos///contents/mkt/spots/ss23-north-woman-dresses/subhome-xmedia-17//w/1138/IMAGE-portrait-ipad-fill-618ddd1f-4af6-4a08-9a80-ba6e547c835b-default_0.jpg?ts=1682679809248"
+                     class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="10000">
+                <img src="https://static.zara.net/photos///contents/mkt/spots/ss23-north-woman-new/subhome-xmedia-18//w/1138/IMAGE-portrait-ipad-fill-cd531b6d-72ea-4dd3-9ac1-e75812a0f58c-default_0.jpg?ts=1682676691027"
+                     class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>
+<div class="areasize">
+    <div class="area">
+        <div class="row">
+            <p class="title">熱銷商品</p>
+        </div>
+        <div class="row">
+            @foreach (var man in Model)
+            {
+                @await Html.PartialAsync("_CardPartial", man)
+            }
+        </div>
+    </div>
+</div>
+<div class="areasize">
+    <div class="area">
+        <div class="row">
+            <p class="title">新品上架</p>
+        </div>
+        <div class="row">
+            @foreach (var man in Model)
+            {
+                @await Html.PartialAsync("_CardPartial", man)
+            }
+        </div>
+    </div>
+</div>
+
+
+@section topCSS{
+    <link href="~/css/Card.css" rel="stylesheet" />
+}

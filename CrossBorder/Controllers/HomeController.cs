@@ -20,7 +20,7 @@ namespace CrossBorder.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(cards);
         }
 
         public IActionResult Privacy()
@@ -33,5 +33,15 @@ namespace CrossBorder.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public List<Product> cards { get; } = new List<Product>
+        {
+            new Product {ProductId = "001", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
+            new Product {ProductId = "002", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
+            new Product {ProductId = "003", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
+            new Product {ProductId = "004", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
+            new Product {ProductId = "005", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
+            new Product {ProductId = "006", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" }
+        };
     }
 }
