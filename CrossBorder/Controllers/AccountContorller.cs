@@ -92,7 +92,6 @@ namespace CrossBorder.Controllers
             var user = await _context.Customers.FirstOrDefaultAsync(u => u.CusdtomerName.ToUpper() == loginVM.UserName.ToUpper() && u.Password == loginVM.Password);
             if (user != null)
             {
-
                 var userInfo = new ApplicationUser
                 {
                     Name = user.CusdtomerName,

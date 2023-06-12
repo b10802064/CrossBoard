@@ -1,4 +1,5 @@
 using CrossBorder.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,17 @@ namespace CrossBorder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                //預設登入驗證網址為Account/Login, 若想變更才需要設定LoginPath
+                //options.LoginPath = new PathString("/Account/Login/");
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.AccessDeniedPath = "/Account/Forbidden/";
+            });
+
             services.AddDbContext<Cross_BorderContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("CrossBorderContext"));
@@ -50,8 +62,10 @@ namespace CrossBorder
 
             app.UseRouting();
 
-            app.UseAuthorization();
 
+            app.UseAuthentication(); //驗證
+
+            app.UseAuthorization();  //授權
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
