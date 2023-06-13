@@ -10,50 +10,52 @@
     @RenderSection("topJS", required: false)
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a asp-controller="Home" asp-action="Index" class="navbar-brand ms-5"><img src="~/aa.png" style="width: 50px;" alt=""></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navv navbar-nav mb-2 mb-lg-0 " id="righ">
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">MAN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">WOMAN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">KIDS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">BABY</a>
-                    </li>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand ms-5"><img src="~/aa.png" style="width: 50px;" alt=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navv navbar-nav mb-2 mb-lg-0 " id="righ">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">MAN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">WOMAN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">KIDS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">BABY</a>
+                        </li>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @*已登入*@
-                        <li class="nav-item"><a href="#" class="nav-link">@User.Identity.Name</a></li>
-                        <li class="nav-item">@Html.ActionLink("登出", "SignOut","Account", null, new { @class="nav-link"})</li>
-                    }
-                    else
-                    {
-                        @*未登入*@
-                        <li class="nav-item"><a href="@Url.Action("Login", "Account")" class="nav-link">登入</a></li>
-                        <li class="nav-item"><a href="@Url.Action("Register", "Account")" class="nav-link">註冊</a></li>
-                    }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @*已登入*@
+                            <li class="nav-item"><a href="#" class="nav-link">@User.Identity.Name</a></li>
+                            <li class="nav-item">@Html.ActionLink("登出", "SignOut","Account", null, new { @class="nav-link"})</li>
+                        }
+                        else
+                        {
+                            @*未登入*@
+                            <li class="nav-item"><a href="@Url.Action("Login", "Account")" class="nav-link">登入</a></li>
+                            <li class="nav-item"><a href="@Url.Action("Register", "Account")" class="nav-link">註冊</a></li>
+                        }
 
-                </ul>
-                <form class="d-flex justify-content-center" id="lefts" role="search">
-                    <input class="form-control " id="seachw" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-secondary " id="nore" type="submit">搜索</button>
-                </form>
+                    </ul>
+                    <form class="d-flex justify-content-center" id="lefts" role="search">
+                        <input class="form-control " id="seachw" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-secondary " id="nore" type="submit">搜索</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
 
     <div class="fullcolor">

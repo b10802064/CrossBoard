@@ -63,6 +63,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    padding-top:60px;
 }
 
 
@@ -162,7 +163,7 @@ footer .line {
 
 .footfixed {
     width: 100%;
-    height:170px;
+    height:252.8px;
 }
 
 .linebotton {
@@ -247,3 +248,15 @@ footer .line {
     .area .title {
         font-size: 30px;
     }
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+.navbar {
+    background-color: #fff;
+    height: 60px; 
+}
