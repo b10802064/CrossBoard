@@ -1,0 +1,51 @@
+﻿.productsidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 20%;
+    /* 左侧侧边栏宽度 */
+    height: 100vh;
+    /* 侧边栏高度，vh为视口高度的单位 */
+    background-color: #e3efef;
+    /* 侧边栏背景颜色 */
+    padding: 20px;
+}
+
+    /* 按钮样式 */
+    .productsidebar button {
+        justify-content: center;
+        display: flex;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #b7d7df;
+        /* 按钮背景颜色 */
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+        transition: width 1s 0s ease;
+    }
+
+.productcontent {
+    margin-left: 20%;
+    width: 80%;
+}
+
+/* 按钮悬停样式 */
+.productsidebar button:hover {
+    background-color: #9ec5ce;
+    /* 按钮悬停背景颜色 */
+    color: #fff;
+    /* 按钮悬停文本颜色 */
+    width: calc(100% + 20px);
+}
+
+.line {
+    height: 20px;
+    border-bottom: #666666 solid 2px;
+    margin-bottom: 10px;
+}
+
+</style >

@@ -43,9 +43,6 @@ namespace CrossBorder.Controllers
             new Product {ProductId = "005", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" },
             new Product {ProductId = "006", ProductName = "衣服名稱", Description = "2000", Photo="0.jpg" }
         };
-        public IActionResult Privaceee()
-        {
-            return View();
-        }
+
     }
 }
