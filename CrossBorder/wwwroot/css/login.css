@@ -8,11 +8,12 @@
     padding: 40px;
     margin:auto;
     margin-top:50px;
+    margin-bottom:50px;
 }
 
     .login-container h2 {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
     }
 
     .login-container input[type="text"],
@@ -26,7 +27,7 @@
     }
 
     .login-container button {
-        background-color: rgb(96, 181, 255);
+        background-color: #56a1a8;
         ;
         color: white;
         padding: 14px 20px;
@@ -38,7 +39,7 @@
     }
 
         .login-container button:hover {
-            background-color: rgb(62, 165, 255);
+            background-color: #449ea6;
         }
 
     .login-container .fa-lock {

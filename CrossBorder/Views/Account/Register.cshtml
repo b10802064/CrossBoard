@@ -4,46 +4,23 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
-
-<h4>RegisterViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="login-container">
+    <h2><i class="fas fa-lock"></i>註冊</h2>
+    <form asp-action="Register">
+        <input asp-for="UserName" type="text" placeholder="用戶名" required><br>
+        <input asp-for="Email" type="text" placeholder="信箱" required><br>
+        <input asp-for="Password" type="password" placeholder="密碼" required><br>
+        <input asp-for="ConfirmPassword" type="password" placeholder="再次輸入密碼" required><br>
+        <button type="submit"><i class="fas fa-sign-in-alt"></i>註冊</button>
+    </form>
 </div>
 
 
 
+
+
+@section topCSS{
+    <link href="~/css/login.css" rel="stylesheet" />
+}
 
 
