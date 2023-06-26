@@ -1,19 +1,21 @@
 ﻿@model Product
+@{
+    int maxLength = 10;  // 最大字數限制
+    string displayProductName = Model.ProductName.Length > maxLength ? Model.ProductName.Substring(0, maxLength) + "..." : Model.ProductName;
+}
 
-<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+
     <div class="card">
         <div class="headshot">
-            <a class="imgbox" href="">
-                <img class="card-img-top" src="~/images/@Model.Photo" alt="...">
+        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.ProductId" class="imgbox">
+                <img class="card-img-top" src="@Model.Photo" alt="...">
             </a>
         </div>
         <div class="card-body">
-            <a href="">
-                <h5 class="card-title">@Model.ProductName</h5>
+        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.ProductId">
+            <h5 class="card-title">@displayProductName</h5>
             </a>
             <p class="card-text">$@Model.Description</p>
             <a href="#" class="btn">加入購物清單</a>
         </div>
     </div>
-
-</div>

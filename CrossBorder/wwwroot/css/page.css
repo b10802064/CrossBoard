@@ -1,0 +1,30 @@
+﻿.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+    margin-top: 20px;
+}
+
+
+.productdetailstext .btn:active {
+    color: #34746b;
+}
+
+.page-item a {
+    color: #b2dfdb;
+    background-color: #5db1b8;
+    ;
+    box-shadow: none !important;
+}
+
+.active > .page-link {
+    color: #b2dfdb;
+    background-color: #4e9298;
+    border-color: rgb(185, 220, 249);
+}
+
+.page-link:hover {
+    color: #b2dfdb;
+    background-color: #4e9298;
+}

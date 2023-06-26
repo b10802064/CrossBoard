@@ -21,8 +21,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navv navbar-nav mb-2 mb-lg-0 " id="righ">
+
                         <li class="nav-item">
-                            <a asp-controller="Products" asp-action="Productmain" class="nav-link ">MAN</a>
+                            <a asp-controller="Products" asp-action="ProductList" class="nav-link ">MAN</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">WOMAN</a>
@@ -37,7 +38,20 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             @*已登入*@
-                            <li class="nav-item"><a href="#" class="nav-link">@User.Identity.Name</a></li>
+
+                            <div class="dropdown">
+                                <a class="nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @User.Identity.Name
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="@Url.Action("AddProduct", "Products")" class="nav-link">查詢新增id</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </div>
+
+
                             <li class="nav-item">@Html.ActionLink("登出", "SignOut","Account", null, new { @class="nav-link"})</li>
                         }
                         else

@@ -71,6 +71,11 @@ namespace CrossBorder
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "ProductPagination",
+                    pattern: "Products/{id?}",
+                    defaults: new { controller = "Products", action = "ProductList" }
+                    );
             });
         }
     }

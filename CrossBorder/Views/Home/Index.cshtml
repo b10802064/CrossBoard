@@ -41,10 +41,14 @@
             <p class="title">熱銷商品</p>
         </div>
         <div class="row">
+            
             @foreach (var man in Model)
             {
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
                 @await Html.PartialAsync("_CardPartial", man)
+                </div>
             }
+            
         </div>
     </div>
 </div>
@@ -54,11 +58,16 @@
             <p class="title">新品上架</p>
         </div>
         <div class="row">
+            
             @foreach (var man in Model)
             {
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
                 @await Html.PartialAsync("_CardPartial", man)
+                </div>
             }
+            
         </div>
+
     </div>
 </div>
 

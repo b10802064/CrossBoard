@@ -187,6 +187,9 @@ footer .line {
     clip: rect(200px,2000px,1000px, 0px);
     top: -200px;
 }
+.navv .dropdown .dropdown-item {
+    height: 50px;
+}
 
 .navv a {
     border-right: #969696 solid;

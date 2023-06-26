@@ -218,5 +218,7 @@ namespace CrossBorder.Models
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         public DbSet<cross_border.ViewModels.RegisterViewModel> RegisterViewModel { get; set; }
+
+        public DbSet<cross_border.ViewModels.AddProductViewModel> AddProductViewModel { get; set; }
     }
 }

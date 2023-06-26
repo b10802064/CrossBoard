@@ -1,0 +1,109 @@
+﻿.productdetails {
+    display: flex;
+    padding: 30px;
+    min-width: 960px;
+}
+
+.productdetailsimage {
+    flex: 6;
+
+}
+
+.productdetailstext {
+    flex: 4;
+    height: 8%;
+    margin-left:60px;
+}
+
+    .productdetailstext h2 {
+        height: 100%;
+    }
+
+.productdetailsimage img {
+    width: 100%;
+    min-width: 350px;
+    margin-right: 0%;
+}
+
+.country-card-container {
+    overflow-x: hidden;
+    white-space: nowrap;
+    display: flex;
+    margin-right: 150px;
+}
+
+    .country-card-container .card {
+        flex: 0 0 28%;
+        margin-right: 10px;
+        border: #ffffff solid 1px;
+        background-color: #fafafa;
+    }
+
+
+.productdetailstext .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+    .productdetailstext .dropdown button {
+        padding: 6px 12px;
+        /* 調整按鈕的內邊距 */
+        font-size: 18px;
+        /* 調整按鈕的字型大小 */
+        border: #fff solid 1px;
+    }
+
+.productdetailstext .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #e0f2f1;
+    /*淡藍綠色*/
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+    .productdetailstext .dropdown-content a {
+        color: #37474f;
+        /*深灰色*/
+        padding: 14px 20px;
+        text-decoration: none;
+        display: block;
+    }
+
+        .productdetailstext .dropdown-content a:hover {
+            background-color: #b2dfdb;
+            /*藍綠色*/
+        }
+
+.productdetailstext .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.productdetailstext .dropdown:hover .dropbtn {
+    background-color: #b2dfdb;
+    /*藍綠色*/
+    color: white;
+}
+
+
+.productdetailstext .btn {
+    --bs-btn-padding-x: 0rem;
+    display: flex;
+    justify-content: center;
+    color: #4dccc5;
+    padding:3px 6px;
+    width:max-content;
+    margin-left:400px;
+    margin-top:25px;
+}
+
+.productdetailstext h2 {
+    color: #5db1b8;
+}
+.productdetailstext h5 {
+    color: #3d757a;
+    ;
+}
+
+

@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authentication;
 using System;
 using CrossBorder.Models;
 using cross_border.ViewModels;
+using System.Net.Mail;
+using System.Reflection.Metadata;
+using System.Net;
 
 namespace cross_border.Controllers
 {
@@ -53,9 +56,7 @@ namespace cross_border.Controllers
                     new Claim(ClaimTypes.Name, user.Name),
                     //new Claim(ClaimTypes.Role, "Administrator") // 如果要有「群組、角色、權限」，可以加入這一段  
                 };
-
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
                 var authProperties = new AuthenticationProperties
                 {
                     //AllowRefresh = <bool>,
@@ -85,7 +86,7 @@ namespace cross_border.Controllers
                     authProperties
                     );
 
-                return LocalRedirect("~/Products/Productmain");
+                return LocalRedirect("~/Products/ProductList");
             }
             return View(loginVM);
         }
@@ -132,6 +133,14 @@ namespace cross_border.Controllers
         {
             if (ModelState.IsValid)
             {
+                Random random = new Random();
+
+                // 生成四個隨機數字
+                string number1 = random.Next().ToString();
+                string number2 = random.Next().ToString();
+                string number3 = random.Next().ToString();
+                string number4 = random.Next().ToString();
+                string number5 = number1 + number2 + number3 + number4;
                 //ViewModel => Data Model
                 Customer user = new Customer
                 {
@@ -141,9 +150,10 @@ namespace cross_border.Controllers
                     Email = registerVM.Email,
                 };
 
+                Send_eMail(registerVM.Email, "測試", "驗證碼:"+ number5);
+                  
                 _context.Customers.Add(user);
                 _context.SaveChanges();
-
                 ViewData["Title"] = "帳號註冊";
                 ViewData["Message"] = "使用者帳號註冊成功!";  //顯示訊息
 
@@ -153,7 +163,42 @@ namespace cross_border.Controllers
             return View(registerVM);
         }
 
+        public static async void Send_eMail(string mailto ,string subject, string body)
+        { //寄發 eMail 信箱
+            /* [ C# 開發隨筆 ] Gmail SMTP發信 ~無法採用低安全性登入後的修正~
+             * https://dotblogs.com.tw/anmlab/2022/06/14/153437
+            */
+            //bool IsSend = false;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("90908787zz@gmail.com", "行翔"); //前面是發信email後面是顯示的名稱
 
+            mail.To.Add(mailto);
+
+            mail.Priority = MailPriority.Normal; //優先權等級
+            mail.Subject = subject; //標題
+            mail.Body = body; //內文
+            mail.IsBodyHtml = true; //內容使用html
+            try
+            {
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                { //設定gmail的smtp (這是google的)
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("90908787zz", "itpwlkxrciomtujv"); //gmail的帳號密碼
+                    smtp.EnableSsl = true; //開啟ssl
+                                           //smtp.Send(mail);
+                    await smtp.SendMailAsync(mail); //發送郵件
+                }
+                //if (IsSend)
+                //{
+                //}
+            }
+            catch (Exception)
+            {
+                //Net.Event_Message(13, "Turnkey", "網路發生異常，請洽知服務人員處理", "Event,Mess013");
+            }
+            mail.Dispose();
+        }
 
     }
 }
