@@ -16,8 +16,6 @@
             <h5 class="card-title">@displayProductName</h5>
             </a>
             <p class="card-text">$@Model.Description</p>
-
-
 @*        <a class="btn" href="#" onclick="document.getElementById('submitButton').click();">
              加入購物清單
         </a>
@@ -26,6 +24,6 @@
             <button type="submit" id="submitButton"></button>
         </form>*@
         @*data-bs-toggle="modal" data-bs-target="#myModal"*@
-        <a asp-controller="Products" asp-action="AddProductlist" asp-route-id="@Model.ProductId"  class="btn">加入比價清單</a>
+        <a asp-controller="Products" asp-action="DeleteCProduct" asp-route-id="@Model.ProductId"  class="btn">取消</a>
         </div>
     </div>

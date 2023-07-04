@@ -1,80 +1,50 @@
-﻿@model Product
+﻿@model cross_border.ViewModels.mixProductCountriesViewModel
 @{
     ViewData["Title"] = "ProductDetail";
 }
+<div class="productdetails_2">
+    <div class="productdetails">
+        <div class="productdetailsimage">
 
-<div class="productdetails">
-    <div class="productdetailsimage">
-
-        <img src="@Model.Photo" alt="Image">
-    </div>
-    <div class="productdetailstext ">
-        <h2>
-            @Model.ProductName
-        </h2>
-        <h5 class="mt-4">
-            本國價格 : $@Model.Description
-        </h5>
-        <h5 class="mt-4 ">
-            各國價格換算詳細
-        </h5>
-        <div class="country-card-container mb-3">
-            <div class="card">
-                <img src="~/images/1.png" class="card-img-top" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">各國價格</h5>
-                    <p class="card-text">$2000</p>
-                    <h5 class="card-title">計算差價</h5>
-                    <p class="card-text">$2000</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="~/images/1.png" class="card-img-top" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">各國價格</h5>
-                    <p class="card-text">$2000</p>
-                    <h5 class="card-title">計算差價</h5>
-                    <p class="card-text">$2000</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="~/images/1.png" class="card-img-top" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">各國價格</h5>
-                    <p class="card-text">$2000</p>
-                    <h5 class="card-title">計算差價</h5>
-                    <p class="card-text">$2000</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="~/images/1.png" class="card-img-top" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">各國價格</h5>
-                    <p class="card-text">$2000</p>
-                    <h5 class="card-title">計算差價</h5>
-                    <p class="card-text">$2000</p>
-                </div>
-            </div>
+            <img src="@Model.Products.Photo" alt="Image">
         </div>
-        <div class="d-flex">
-            <h5 class="d-flex align-items-center me-3">
-                選擇要換算成哪個幣值 :
+        <div class="productdetailstext ">
+            <h2>
+                @Model.Products.ProductName
+            </h2>
+            <h5 class="">
+                本國價格 : $@Model.Products.Description
             </h5>
-            <div class="dropdown">
-                <button class="dropbtn">選擇幣種(默認為台幣)</button>
-                <div class="dropdown-content">
-                    <a href="#">美金</a>
-                    <a href="#">日圓</a>
-                    <a href="#">港幣</a>
-                    <a href="#">人民幣</a>
-                </div>
-            </div>
-        </div>
-        <a href="#" class="btn">加入購物清單</a>
+            <h5 class="">
+                各國價格換算詳細
+            </h5>
+            <div class="country-card-container mb-3">
 
+                @foreach (var man in Model.currencyVMs)
+                {
+                    @await Html.PartialAsync("_CardPartial_pd", man)
+                }
+
+            </div>
+    @*        <div class="d-flex">
+                <h5 class="d-flex align-items-center me-3">
+                    選擇要換算成哪個幣值 :
+                </h5>
+                <div class="dropdown">
+                    <button class="dropbtn">選擇幣種(默認為台幣)</button>
+                    <div class="dropdown-content">
+                        <a href="#">美金</a>
+                        <a href="#">日圓</a>
+                        <a href="#">港幣</a>
+                        <a href="#">人民幣</a>
+                    </div>
+                </div>
+            </div>*@
+            <a asp-controller="Products" asp-action="AddProductlist" asp-route-id="@Model.Products.ProductId" class="btn">加入比價清單</a>
+
+        </div>
     </div>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>

@@ -2,12 +2,13 @@
 
 @{
     ViewData["Title"] = "Register";
+
 }
 
 <div class="login-container">
     <h2><i class="fas fa-lock"></i>註冊</h2>
     <form asp-action="Register">
-        <input asp-for="UserName" type="text" placeholder="用戶名" required><br>
+        <input asp-for="UserName" type="text" placeholder="帳號" required><br>
         <input asp-for="Email" type="text" placeholder="信箱" required><br>
         <input asp-for="Password" type="password" placeholder="密碼" required><br>
         <input asp-for="ConfirmPassword" type="password" placeholder="再次輸入密碼" required><br>
@@ -15,7 +16,7 @@
 
         <button asp-controller="Products" asp-action="ProductList"><i class="fas fa-sign-in-alt"></i>發送驗證碼</button>*@
 
-        <button type="submit"><i class="fas fa-sign-in-alt"></i>註冊</button>
+        <button type="submit" ><i class="fas fa-sign-in-alt"></i>註冊</button>
     </form>
 </div>
 

@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<Product>
 @using System.Web
 @{
-    ViewData["Title"] = "ProductList";
+    ViewData["Title"] = "ProductSearch";
     int activePage = (int)ViewData["ActivePage"];
     int pages = (int)ViewData["Pages"];
+    string keyword =(string)ViewData["Keyword"];
 
 }
 
@@ -47,25 +48,25 @@
     <h2>商品總覽</h2>
     <div class="line"></div>
     <div class="row">
-        
+
         @foreach (var man in Model)
         {
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
-            @await Html.PartialAsync("_CardPartial", man)
+                @await Html.PartialAsync("_CardPartial", man)
             </div>
         }
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item "><a class="page-link" asp-controller="Products" asp-action="ProductList" asp-route-category="@ViewData["Category"]" asp-route-id="@(activePage-1)"> &lt; </a></li>
+            <li class="page-item "><a class="page-link" asp-controller="Products" asp-action="ProductSearch" asp-route-keyword="@keyword" asp-route-id="@(activePage-1) "> &lt; </a></li>
 
             @for (int i = 1; i <= pages; i++)
             {
-                <li class="page-item @(i==activePage? "active":"")"><a class="page-link" asp-controller="Products" asp-action="ProductList" asp-route-category="@ViewData["Category"]" asp-route-id="@i">@i</a></li>
-                
+                <li class="page-item @(i==activePage? "active":"")"><a class="page-link" asp-controller="Products" asp-action="ProductSearch" asp-route-keyword="@keyword" asp-route-id="@i">@i</a></li>
+
             }
 
-            <li class="page-item "><a class="page-link" asp-controller="Products" asp-action="ProductList" asp-route-category="@ViewData["Category"]" asp-route-id="@(activePage + 1)"> &gt; </a></li>
+            <li class="page-item "><a class="page-link" asp-controller="Products" asp-action="ProductSearch" asp-route-keyword="@keyword" asp-route-id="@(activePage + 1)"> &gt; </a></li>
 
         </ul>
     </nav>

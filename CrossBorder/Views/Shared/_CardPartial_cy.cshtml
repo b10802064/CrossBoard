@@ -1,0 +1,23 @@
+﻿@model cross_border.ViewModels.CurrencyViewModel
+
+
+    <div class="card">
+        <div class="headshot">
+        <a asp-controller="Products" asp-action="ProductDetail"  class="imgbox">
+                <img class="card-img-top" src="@Model.Photo" alt="...">
+            </a>
+        </div>
+        <div class="card-body">
+        <h4 class="card-text">總和: $@Model.Price</h4>
+
+@*        <a class="btn" href="#" onclick="document.getElementById('submitButton').click();">
+             加入購物清單
+        </a>
+        <form asp-action="AddProductlist" style="display: none;">
+            <input asp-for="ProductId" value="@Model.ProductId" type="hidden" required>
+            <button type="submit" id="submitButton"></button>
+        </form>*@
+        @*data-bs-toggle="modal" data-bs-target="#myModal"*@
+@*        <a asp-controller="Products" asp-action="AddProductlist" asp-route-id="@Model.ProductId"  class="btn">加入購物清單</a>*@
+        </div>
+    </div>

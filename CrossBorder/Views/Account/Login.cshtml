@@ -9,7 +9,7 @@
     <h2><i class="fas fa-lock"></i>登入</h2>
     <form asp-action="Login">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input asp-for="UserName" type="text" placeholder="用戶名" required><br>
+        <input asp-for="UserName" type="text" placeholder="帳號" required><br>
         <input asp-for="Password" type="password" placeholder="密碼" required><br>
         <button type="submit"><i class="fas fa-sign-in-alt"></i>登入</button>
     </form>

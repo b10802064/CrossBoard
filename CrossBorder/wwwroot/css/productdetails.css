@@ -2,15 +2,22 @@
     display: flex;
     padding: 30px;
     min-width: 960px;
+    border-radius: 15px;
+    background-color: #4d97cc2a;
 }
-
-.productdetailsimage {
-    flex: 6;
-
+.productdetails_2 {
+    padding: 10px;
+    border: #4dccc5 solid 2px;
+    border-radius: 15px;
+    min-width: 990px;
+    margin-top: 30px;
 }
+    .productdetailsimage {
+        flex: 5;
+    }
 
 .productdetailstext {
-    flex: 4;
+    flex: 5;
     height: 8%;
     margin-left:60px;
 }
@@ -29,11 +36,12 @@
     overflow-x: hidden;
     white-space: nowrap;
     display: flex;
-    margin-right: 150px;
+    margin-right: 30px;
 }
 
     .country-card-container .card {
-        flex: 0 0 28%;
+        flex: 0 0 40%;
+        height: 44%;
         margin-right: 10px;
         border: #ffffff solid 1px;
         background-color: #fafafa;
@@ -93,17 +101,18 @@
     justify-content: center;
     color: #4dccc5;
     padding:3px 6px;
-    width:max-content;
-    margin-left:400px;
-    margin-top:25px;
+    width:100%;
+    margin-top:12%;
 }
 
 .productdetailstext h2 {
     color: #5db1b8;
+
 }
 .productdetailstext h5 {
     color: #3d757a;
-    ;
+    margin-top:5%;
+    margin-bottom:5%;
 }
 
 

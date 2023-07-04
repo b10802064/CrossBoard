@@ -76,6 +76,11 @@ namespace CrossBorder
                     pattern: "Products/{id?}",
                     defaults: new { controller = "Products", action = "ProductList" }
                     );
+                endpoints.MapControllerRoute(
+                    name: "ProductPagination",
+                    pattern: "Products/{id?}",
+                    defaults: new { controller = "Products", action = "ProductSearch" }
+                    );
             });
         }
     }

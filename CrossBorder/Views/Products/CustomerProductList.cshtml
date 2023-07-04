@@ -1,0 +1,61 @@
+﻿@model cross_border.ViewModels.mixCurrencyViewModel
+@{
+    ViewData["Title"] = "CustomerProductList";
+}
+
+<div class="product_country_list">
+    <div class="product_list_2">
+        <div class="product_list">
+            <h2>商品比價清單</h2>
+            <div class="row">
+                    @foreach (var man in Model.Products)
+                    {
+                        <div class="col-xl-3 col-lg-2 col-md-2 col-sm-12 ccard">
+                            @await Html.PartialAsync("_CardPartial_cp", man)
+                        </div>
+                    }
+                </div>
+        </div>
+    </div>
+    <div class="separate">
+    </div>
+    <div class="country_list_2">
+        <div class="country_list">
+            <h2>各國比價列表</h2>
+                <div class="row">
+
+                    @foreach (var man in Model.currencyVMs)
+                    {
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ccard">
+                            @await Html.PartialAsync("_CardPartial_cy", man)
+                        </div>
+                    }
+                </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".product-card-container").on("scroll", function () {
+            var scrollLeft = $(this).scrollLeft();
+            if (scrollLeft > 0) {
+                $(this).addClass("scrolled");
+            } else {
+                $(this).removeClass("scrolled");
+            }
+        });
+
+        $(".product-card-container").on("wheel", function (event) {
+            event.preventDefault();
+            var scrollAmount = event.originalEvent.deltaY;
+            $(this).scrollLeft($(this).scrollLeft() + scrollAmount);
+        });
+    });
+</script>
+
+
+@section topCSS{
+    <link href="~/css/Card_cp.css" rel="stylesheet" />
+}

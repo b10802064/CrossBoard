@@ -23,16 +23,16 @@
                     <ul class="navv navbar-nav mb-2 mb-lg-0 " id="righ">
 
                         <li class="nav-item">
-                            <a asp-controller="Products" asp-action="ProductList" class="nav-link ">MAN</a>
+                            <a asp-controller="Products" asp-action="ProductList" asp-route-category="男裝" asp-route-id="1" class="nav-link">MAN</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">WOMAN</a>
+                            <a asp-controller="Products" asp-action="ProductList" asp-route-category="女裝" asp-route-id="1" class="nav-link">WOMAN</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">KIDS</a>
+                            <a asp-controller="Products" asp-action="ProductList" asp-route-category="童裝" asp-route-id="1" class="nav-link">KIDS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">BABY</a>
+                            <a asp-controller="Products" asp-action="ProductList" asp-route-category="新生兒/嬰幼兒" asp-route-id="1" class="nav-link">BABY</a>
                         </li>
 
                         @if (User.Identity.IsAuthenticated)
@@ -45,9 +45,11 @@
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="@Url.Action("AddProduct", "Products")" class="nav-link">查詢新增id</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <li><a class="dropdown-item " href="@Url.Action("AddProduct", "Products")" >查詢新增id</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("CustomerProductList", "Products")">購物清單</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("CEdit", "Account")">會員中心</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("AddcCurrency", "Currency")">更新匯率</a></li>
+@*                                    <li><a class="dropdown-item" href="@Url.Action("Addtype", "Currency")">更新類別</a></li>*@
                                 </ul>
                             </div>
 
@@ -62,9 +64,9 @@
                         }
 
                     </ul>
-                    <form class="d-flex justify-content-center" id="lefts" role="search">
-                        <input class="form-control " id="seachw" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-secondary " id="nore" type="submit">搜索</button>
+                    <form class="d-flex justify-content-center" id="lefts" role="search" method="get" action="@Url.Action("ProductSearch", "Products")">
+                        <input class="form-control" id="seachw" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                        <button class="btn btn-secondary" id="nore" type="submit">搜索</button>
                     </form>
                 </div>
             </div>

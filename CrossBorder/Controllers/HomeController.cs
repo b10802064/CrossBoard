@@ -12,15 +12,21 @@ namespace CrossBorder.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly Cross_BorderContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, Cross_BorderContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View(cards);
+            var products = _context.Products.ToList();
+            var random = new Random();
+            var randomIndexes = Enumerable.Range(0, products.Count()).OrderBy(x => random.Next()).Take(6);
+            var randomProducts = randomIndexes.Select(index => products[index]).ToList();
+            return View(randomProducts);
         }
 
         public IActionResult Privacy()

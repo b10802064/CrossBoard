@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Products\AddProductlist.cshtml" />
     <Content Remove="wwwroot\js\productdetails.js" />
   </ItemGroup>
 

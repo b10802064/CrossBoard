@@ -14,6 +14,9 @@ using cross_border.ViewModels;
 using System.Net.Mail;
 using System.Reflection.Metadata;
 using System.Net;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using CrossBorder.MyClass;
 
 namespace cross_border.Controllers
 {
@@ -136,11 +139,11 @@ namespace cross_border.Controllers
                 Random random = new Random();
 
                 // 生成四個隨機數字
-                string number1 = random.Next().ToString();
-                string number2 = random.Next().ToString();
-                string number3 = random.Next().ToString();
-                string number4 = random.Next().ToString();
-                string number5 = number1 + number2 + number3 + number4;
+                //string number1 = random.Next().ToString();
+                //string number2 = random.Next().ToString();
+                //string number3 = random.Next().ToString();
+                //string number4 = random.Next().ToString();
+                //string number5 = number1 + number2 + number3 + number4;
                 //ViewModel => Data Model
                 Customer user = new Customer
                 {
@@ -149,19 +152,23 @@ namespace cross_border.Controllers
                     Password = registerVM.Password,
                     Email = registerVM.Email,
                 };
-
-                Send_eMail(registerVM.Email, "測試", "驗證碼:"+ number5);
-                  
+                //Send_eMail(registerVM.Email, "測試", "驗證碼:"+ number5);
+                Net.LineNotify("有帳號註冊 :\n"+ registerVM.UserName);
                 _context.Customers.Add(user);
                 _context.SaveChanges();
                 ViewData["Title"] = "帳號註冊";
                 ViewData["Message"] = "使用者帳號註冊成功!";  //顯示訊息
 
-                return View("~/Views/Shared/ResultMessage.cshtml");
+                return View("~/Views/Shared/ResultMessage_true.cshtml");
             }
 
             return View(registerVM);
         }
+
+
+
+
+
 
         public static async void Send_eMail(string mailto ,string subject, string body)
         { //寄發 eMail 信箱
@@ -200,5 +207,73 @@ namespace cross_border.Controllers
             mail.Dispose();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UserFeedBack(string feedback)
+        {
+            Net.LineNotify("用戶反饋 :\n" + feedback);
+
+            ViewData["Title"] = "用戶反饋";
+            ViewData["Message"] = "用戶反饋成功!";  //顯示訊息
+
+            return View("~/Views/Shared/ResultMessage_true.cshtml");
+        }
+
+        public IActionResult CEdit()
+        {
+            string loggedInUsername = User.Identity.Name;
+            var customer = _context.Customers.FirstOrDefault(m => m.CusdtomerName == loggedInUsername);
+            if (customer == null)
+            {
+                return View("Error");
+            }
+
+            return View(customer);
+        }
+
+        // POST: Member/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CEdit(Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Attach(customer);
+                _context.Entry(customer).Property(m => m.CusdtomerName).IsModified = true;
+                _context.Entry(customer).Property(m => m.Email).IsModified = true;
+                _context.Entry(customer).Property(m => m.Password).IsModified = true;
+
+                if (customer.Password == null)
+                {
+                    ModelState.AddModelError(string.Empty, "密碼未輸入");
+                    return View(customer);
+                }
+                _context.SaveChanges();
+
+                // 執行登出操作
+                Task.Run(async () => await HttpContext.SignOutAsync()).Wait();
+
+                // 使用新的會員資訊進行身份驗證並登入
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, customer.CusdtomerName)
+
+                    // 添加其他需要的 Claim
+                };
+
+                var identity = new ClaimsIdentity(claims, "MemberIdentity");
+                var principal = new ClaimsPrincipal(identity);
+
+                Task.Run(async () => await HttpContext.SignInAsync(principal)).Wait();
+
+                // 重新導向到某個頁面或執行其他適當的處理
+                return RedirectToAction("Index", "Home");
+            }
+
+            // 驗證失敗，返回編輯視圖顯示驗證錯誤信息
+            return View(customer);
+        }
     }
+
+
 }
