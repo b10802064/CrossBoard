@@ -100,9 +100,11 @@
     display: flex;
     justify-content: center;
     color: #4dccc5;
-    padding:3px 6px;
-    width:100%;
-    margin-top:12%;
+    padding: 3px 6px;
+    width: 100%;
+    margin-top: 12%;
+    border-radius: 15px;
+    border: #4dccc5 solid 2px;
 }
 
 .productdetailstext h2 {
@@ -114,5 +116,4 @@
     margin-top:5%;
     margin-bottom:5%;
 }
-
 

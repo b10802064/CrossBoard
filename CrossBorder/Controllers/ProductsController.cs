@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Classification;
 using System.Collections;
+using Microsoft.CodeAnalysis;
 
 namespace CrossBorder.Controllers
 {
@@ -187,7 +188,6 @@ namespace CrossBorder.Controllers
                         {
                             chack1 = false;
                         }
-                        
                     }
 
                     if (chack1)
@@ -361,23 +361,63 @@ namespace CrossBorder.Controllers
 
 
             var filteredList = _context.Products.Where(item => cplist.Contains(item.ProductId)).ToList();
+
             var filteredList2 = _context.Sales.Where(item => cplist.Contains(item.ProductId)).ToList();
             var result = filteredList2.GroupBy((x) => x.CountryId);
 
 
             var currencyVMs = result.Select(group => new CurrencyViewModel
             {
-                Price = group.Sum(item => item.Price)/Convert.ToDecimal( (from data in _context.Countries
-                                                        where data.CountryId == @group.Key
-                                                        select data.Prefix).FirstOrDefault()),
+                //Price = group.Sum(item => item.Price) / Convert.ToDecimal((from data in _context.Countries
+                //                                                           where data.CountryId == @group.Key
+                //                                                           select data.Prefix).FirstOrDefault()),
+                Price = group.Sum(item =>
+                {
+                    var shoppinglist = _context.Shoppinglists
+                        .FirstOrDefault(sl => sl.ProductId == item.ProductId);
+                    if (shoppinglist != null)
+                    {
+                        return item.Price * shoppinglist.Amount;
+                    }
+                    return 0;
+                }) / Convert.ToDecimal((from data in _context.Countries
+                                        where data.CountryId == @group.Key
+                                        select data.Prefix).FirstOrDefault()),
+
                 Photo = (from data in _context.Countries
                          where data.CountryId == @group.Key
                          select data.CountryName).FirstOrDefault()
-        }).ToList();
+            }).ToList();
+
+            var productinfoVMs = filteredList.Select(group => new ProductinfoViewModel
+            {
+                Products = group,
+
+                
+                Amount = (from data in _context.Shoppinglists
+                         where data.ProductId == @group.ProductId
+                         select data.Amount).FirstOrDefault(),
+
+                Price = (from data in _context.Sales
+                         where data.ProductId == @group.ProductId && data.CountryId =="TW"
+                         select data.Price*(
+                         from amount in _context.Shoppinglists
+                         where amount.ProductId == @group.ProductId
+                         select amount.Amount
+                         ).FirstOrDefault()).FirstOrDefault()
+
+            }).ToList();
+
+
+            //(from item in groupedData
+            // from sale in item.Product.Shoppinglists
+            // select item.Price * sale.Amount).Sum()
+
+
 
             var mixViewModel = new mixCurrencyViewModel
             {
-                Products = filteredList,
+                Products = productinfoVMs,
                 currencyVMs = currencyVMs
             };
             return View(mixViewModel);
@@ -399,6 +439,57 @@ namespace CrossBorder.Controllers
             }
             return View();
         }
+
+
+
+
+        [HttpGet]
+        public IActionResult ProductAmount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult ProductAmount(string? id, int amount)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Product product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            string username = User.Identity.Name;
+            var customer = (from data in _context.Customers
+                            where data.CusdtomerName.Trim() == username.Trim()
+                            select data).FirstOrDefault();
+            Shoppinglist shoppingList = _context.Shoppinglists.FirstOrDefault(sl => sl.CustomerId == customer.CustomerId && sl.ProductId == id);
+
+            if (shoppingList != null)
+            {
+                // 更新购物清单中的Amount值
+                shoppingList.Amount = amount;
+                _context.SaveChanges();
+
+                ViewData["Title"] = "更新數量";
+                ViewData["Message"] = "更新數量成功!";
+                return View("~/Views/Shared/ResultMessage_true.cshtml");
+            }
+
+            return View();
+
+        }
+
+
+
+
+
+
+
 
     }
 }

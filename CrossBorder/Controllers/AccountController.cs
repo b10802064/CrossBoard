@@ -89,7 +89,7 @@ namespace cross_border.Controllers
                     authProperties
                     );
 
-                return LocalRedirect("~/Products/ProductList");
+                return LocalRedirect("~/Home/Index");
             }
             return View(loginVM);
         }

@@ -10,7 +10,7 @@ namespace cross_border.ViewModels
         public int Id { get; set; }
 
         [Required]
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductinfoViewModel> Products { get; set; }
         [Required]
         public IEnumerable<CurrencyViewModel> currencyVMs { get; set; }
 

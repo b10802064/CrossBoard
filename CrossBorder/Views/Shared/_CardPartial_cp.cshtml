@@ -1,21 +1,27 @@
-﻿@model Product
-@{
-    int maxLength = 10;  // 最大字數限制
-    string displayProductName = Model.ProductName.Length > maxLength ? Model.ProductName.Substring(0, maxLength) + "..." : Model.ProductName;
-}
+﻿@model cross_border.ViewModels.ProductinfoViewModel
+
 
 
     <div class="card">
         <div class="headshot">
-        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.ProductId" class="imgbox">
-                <img class="card-img-top" src="@Model.Photo" alt="...">
+        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.Products.ProductId" class="imgbox">
+            <img class="card-img-top" src="@Model.Products.Photo" alt="...">
             </a>
         </div>
         <div class="card-body">
-        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.ProductId">
-            <h5 class="card-title">@displayProductName</h5>
+        <a asp-controller="Products" asp-action="ProductDetail" asp-route-id="@Model.Products.ProductId">
+            <h5 class="card-title">@Model.Products.ProductName</h5>
             </a>
-            <p class="card-text">$@Model.Description</p>
+        <p class="card-text">$@Model.Price</p>
+        <p class="card-text">數量: @Model.Amount</p>
+
+
+        <form asp-action="ProductAmount" asp-route-id="@Model.Products.ProductId" class="d-flex amount">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Amount" type="number" style="border:3px #34746b dotted;" placeholder="@Model.Amount" required min="1"><br>
+            <button class="btn ms-2" style="width:100%" type="submit"><i class="fas fa-sign-in-alt"></i>更改</button>
+        </form>
+
 @*        <a class="btn" href="#" onclick="document.getElementById('submitButton').click();">
              加入購物清單
         </a>
@@ -24,6 +30,6 @@
             <button type="submit" id="submitButton"></button>
         </form>*@
         @*data-bs-toggle="modal" data-bs-target="#myModal"*@
-        <a asp-controller="Products" asp-action="DeleteCProduct" asp-route-id="@Model.ProductId"  class="btn">取消</a>
+        <a asp-controller="Products" asp-action="DeleteCProduct" asp-route-id="@Model.Products.ProductId" class="btn">取消商品</a>
         </div>
     </div>

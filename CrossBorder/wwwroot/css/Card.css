@@ -19,6 +19,10 @@
     color: rgb(123, 122, 122);
     display: inline-block;
     border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .card-body a h5:hover {

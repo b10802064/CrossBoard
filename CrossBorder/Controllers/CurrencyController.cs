@@ -75,8 +75,8 @@ namespace CrossBorder.Controllers
             {
                 string responseResultJT = responseMessageJT.Content.ReadAsStringAsync().Result;
                 var document = context.OpenAsync(res => res.Content(responseResultJT)).Result;
-                var jps = document.QuerySelector("table.conversionchart tr:nth-child(10) td:first-child");
-                var tws = document.QuerySelector("table.conversionchart tr:nth-child(10) td:last-child");
+                var jps = document.QuerySelector("table.conversionchart tr:nth-child(19) td:first-child");
+                var tws = document.QuerySelector("table.conversionchart tr:nth-child(19) td:last-child");
                 decimal tw = Convert.ToDecimal(tws.TextContent);
                 decimal jp = Convert.ToDecimal(jps.TextContent);
                 var twtojp = jp / tw;
