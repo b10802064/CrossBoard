@@ -18,7 +18,7 @@
 
         <form asp-action="ProductAmount" asp-route-id="@Model.Products.ProductId" class="d-flex amount">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Amount" type="number" style="border:3px #34746b dotted;" placeholder="@Model.Amount" required min="1"><br>
+            <input asp-for="Amount" type="number" style="border:3px #34746b dotted; outline: none;" placeholder="@Model.Amount" required min="1"><br>
             <button class="btn ms-2" style="width:100%" type="submit"><i class="fas fa-sign-in-alt"></i>更改</button>
         </form>
 

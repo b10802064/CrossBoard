@@ -16,6 +16,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Classification;
 using System.Collections;
 using Microsoft.CodeAnalysis;
+using CrossBorder.MyClass;
 
 namespace CrossBorder.Controllers
 {
@@ -282,9 +283,11 @@ namespace CrossBorder.Controllers
                         jpprice = jpdata.result.prices[jpcoode]["base"].value;
 
                     }
+                    var chinesers = Net.SendRequest(jpurlcode);
+                    dynamic chinesedata = JsonConvert.DeserializeObject(chinesers);
+                    string chinesecoode = chinesedata.resp[1][0].productCode;
 
-
-                    if(jpprice == "0")
+                    if (jpprice == "0")
                     {
                         ViewData["Title"] = "新增失敗";
                         ViewData["Message"] = "日本無此商品!";
@@ -392,8 +395,6 @@ namespace CrossBorder.Controllers
             var productinfoVMs = filteredList.Select(group => new ProductinfoViewModel
             {
                 Products = group,
-
-                
                 Amount = (from data in _context.Shoppinglists
                          where data.ProductId == @group.ProductId
                          select data.Amount).FirstOrDefault(),
