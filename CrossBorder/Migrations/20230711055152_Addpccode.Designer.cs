@@ -3,14 +3,16 @@ using CrossBorder.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CrossBorder.Migrations
 {
     [DbContext(typeof(Cross_BorderContext))]
-    partial class Cross_BorderContextModelSnapshot : ModelSnapshot
+    [Migration("20230711055152_Addpccode")]
+    partial class Addpccode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +129,6 @@ namespace CrossBorder.Migrations
                     b.Property<string>("Photo2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductCN")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProductJP")
                         .HasColumnType("nvarchar(max)");
 
@@ -159,8 +158,8 @@ namespace CrossBorder.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
 
-                    b.Property<string>("ProductCountrycode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("ProductCountrycode")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId", "CountryId");
 

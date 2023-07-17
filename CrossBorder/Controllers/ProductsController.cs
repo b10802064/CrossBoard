@@ -55,8 +55,6 @@ namespace CrossBorder.Controllers
             {
                 Pages = (totalRows / pageRows) + 1;
             }
-
-
             if (id < 1)
             {
                 id = 1;
@@ -68,15 +66,11 @@ namespace CrossBorder.Controllers
             }
             int activePage = id; //目前所在頁
             int startRow = (activePage - 1) * pageRows;  //起始記錄Index
-
-
             List<Product> productspage = searchResults.Skip(startRow).Take(pageRows).ToList();
             ViewData["Active"] = 1;    //SidebarActive頁碼
             ViewData["ActivePage"] = id;    //Activec分頁碼
             ViewData["Pages"] = Pages;  //頁數
             ViewData["Keyword"] = keyword;  
-
-
             // 将搜索结果传递给视图
             return View(productspage);
         }
@@ -126,19 +120,38 @@ namespace CrossBorder.Controllers
             ViewData["ActivePage"] = id;    //Activec分頁碼
             ViewData["Pages"] = Pages;  //頁數
             ViewData["Category"] = category;
-
-
-            // 计算最大页数
             return View(productspage);
         }
 
         public IActionResult ProductDetail(string? id)
         {
+
+            //Product existingcountry = _context.Products.FirstOrDefault(u => u.ProductId.Trim() == id.Trim());
+            //if (existingcountry != null)
+            //{
+            //    existingcountry.Prefix = twtojp.ToString();
+            //    existingcountry2.Prefix = twtocn.ToString();
+            //    _context.SaveChanges();
+            //}
             if (id == null)
             {
                 return BadRequest();
             }
             Product product = _context.Products.Find(id);
+
+
+            Sale existingcountry = _context.Sales.FirstOrDefault(u => u.ProductId.Trim() == id.Trim() && u.CountryId == "JP");
+            List<string> resultList = Net.Getjpdata(product.ProductJP);
+            string jpprice = resultList[1];
+            string jpcode = resultList[0];
+
+            if (existingcountry != null)
+            {
+                existingcountry.Price = Convert.ToDecimal(jpprice);
+                existingcountry.ProductCountrycode = jpcode;
+                _context.SaveChanges();
+            }
+
             if (product == null)
             {
                 return NotFound();
@@ -152,17 +165,16 @@ namespace CrossBorder.Controllers
                                                         select data.Prefix).FirstOrDefault()),
                 Photo = (from data in _context.Countries
                          where data.CountryId == @group.CountryId
-                         select data.CountryName).FirstOrDefault()
-            }).ToList();
+                         select data.CountryName).FirstOrDefault(),
+                code = group.ProductCountrycode
+
+            }).OrderBy(vm => vm.Price).ToList();
 
             var mixViewModel = new mixProductCountriesViewModel
             {
                 Products = product,
                 currencyVMs = pdVMs,
             };
-
-
-
             return View(mixViewModel);
         }
 
@@ -254,58 +266,91 @@ namespace CrossBorder.Controllers
                     //讀取Content內容
                     string responseResult = responseMessage.Content.ReadAsStringAsync().Result;
                     string responseResult2 = responseMessage2.Content.ReadAsStringAsync().Result;
-                    //var document = context.OpenAsync(res => res.Content(responseResult)).Result;
-                    //var head = document.QuerySelectorAll(".leading-0 .article-intro ul:nth-child(4) li");
-                    //foreach (var c in head)
-                    //{
-                    //    //取得每個元素的TextContent
-
-                    //    ViewData["head"] += c.TextContent;
-                    //}
                     dynamic pricedata = JsonConvert.DeserializeObject(responseResult);
                     dynamic namedata = JsonConvert.DeserializeObject(responseResult2);
                     //dynamic namedata = JsonConvert.DeserializeObject(responseResult);
-                    string jpprice="0";
                     string price = pricedata.resp[0].summary.minPrice;
                     string productname = namedata.summary.name;
                     string type = namedata.summary.gDeptValue;
-                    //
+                    //日本區處理
+                    string jpprice="0";
+                    string jptruecoode = "";
                     string productphoto = "https://www.uniqlo.com/tw/hmall/test/" + AddPVM.ProductId + "/main/first/1000/1.jpg";
-
+                    string productphoto2 = "https://www.uniqlo.com/tw/hmall/test/" + AddPVM.ProductId + "/main/other2/1000/3.jpg";
                     string jpurlcode = namedata.summary.code;
-                    string urljp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products/E" + jpurlcode + "-000/price-groups/00/l2s?withPrices=true&withStocks=true&httpFailure=true";
-                    var responseMessagejp = httpClient.GetAsync(urljp).Result;
-                    if (responseMessagejp.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        string responseResultjp = responseMessagejp.Content.ReadAsStringAsync().Result;
-                        dynamic jpdata = JsonConvert.DeserializeObject(responseResultjp);
-                        string jpcoode = jpdata.result.l2s[0].l2Id;
-                        jpprice = jpdata.result.prices[jpcoode]["base"].value;
 
-                    }
-                    var chinesers = Net.SendRequest(jpurlcode);
-                    dynamic chinesedata = JsonConvert.DeserializeObject(chinesers);
-                    string chinesecoode = chinesedata.resp[1][0].productCode;
 
-                    if (jpprice == "0")
+                    List<string> resultList = Net.Getjpdata(jpurlcode);
+                    jptruecoode = resultList[0];
+                    jpprice = resultList[1];
+
+                    if (jptruecoode == "")
                     {
                         ViewData["Title"] = "新增失敗";
                         ViewData["Message"] = "日本無此商品!";
-
                         return View("~/Views/Shared/ResultMessage_true.cshtml");
                     }
 
+
+                    //string searchjp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products?q=" + jpurlcode + "&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true";
+                    //var responseMessagejps = httpClient.GetAsync(searchjp).Result;
+                    //if (responseMessagejps.StatusCode == System.Net.HttpStatusCode.OK)
+                    //{
+                    //    string responseResultjps = responseMessagejps.Content.ReadAsStringAsync().Result;
+                    //    dynamic jpdatas = JsonConvert.DeserializeObject(responseResultjps);
+                    //    if(jpdatas.result.items.Count <= 0)
+                    //    {
+                    //        ViewData["Title"] = "新增失敗";
+                    //        ViewData["Message"] = "日本無此商品!";
+                    //        return View("~/Views/Shared/ResultMessage_true.cshtml");
+                    //    }
+                    //    else
+                    //    {
+                    //        jptruecoode = jpdatas.result.items[0].productId;
+                    //    }  
+                    //}
+
+                    //string urljp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products/" + jptruecoode + "/price-groups/00/l2s?withPrices=true&withStocks=true&httpFailure=true";
+                    //var responseMessagejp = httpClient.GetAsync(urljp).Result;
+                    //if (responseMessagejp.StatusCode == System.Net.HttpStatusCode.OK)
+                    //{
+                    //    string responseResultjp = responseMessagejp.Content.ReadAsStringAsync().Result;
+                    //    dynamic jpdata = JsonConvert.DeserializeObject(responseResultjp);
+                    //    string jpcoode = jpdata.result.l2s[0].l2Id;
+                    //    jpprice = jpdata.result.prices[jpcoode]["base"].value;
+
+                    //}
+
+
+                    //中國區處理
+                    string cnprice = "0";
+                    var chinesers = Net.SendRequest(jpurlcode);
+                    dynamic chinesedata = JsonConvert.DeserializeObject(chinesers);
+
+                    if(chinesedata.resp[1].Count == 0)
+                    {
+                        ViewData["Title"] = "新增失敗";
+                        ViewData["Message"] = "中國無此商品!";
+                        return View("~/Views/Shared/ResultMessage_true.cshtml");
+                    }
+                    string cncoode = chinesedata.resp[1][0].productCode;
+                    cnprice = chinesedata.resp[1][0].prices[0];
+                    if (type == "女童")
+                    {
+                        type = "童裝";
+                    }
                     var typeid = _context.Types.FirstOrDefault(m => m.TypeName == type).TypeId;
                     if (ModelState.IsValid)
                     {
-                        
-
                         Product product = new Product
                         {
                             ProductId = AddPVM.ProductId.Trim(),
+                            ProductJP = jptruecoode,
+                            ProductCN = cncoode,
                             ProductName = productname,
                             Description = price,
                             Photo = productphoto,
+                            Photo2 = productphoto2
                         };
 
                         Classified classified = new Classified
@@ -318,19 +363,29 @@ namespace CrossBorder.Controllers
                         {
                             ProductId = AddPVM.ProductId.Trim(),
                             CountryId = "JP",
-                            Price = Convert.ToDecimal(jpprice)
+                            Price = Convert.ToDecimal(jpprice),
+                            ProductCountrycode = jptruecoode.Trim()
                         };
                         Sale saletw = new Sale
                         {
                             ProductId = AddPVM.ProductId.Trim(),
                             CountryId = "TW",
-                            Price = Convert.ToDecimal(price)
+                            Price = Convert.ToDecimal(price),
+                            ProductCountrycode = AddPVM.ProductId.Trim()
+                        };
+                        Sale salecn = new Sale
+                        {
+                            ProductId = AddPVM.ProductId.Trim(),
+                            CountryId = "CN",
+                            Price = Convert.ToDecimal(cnprice),
+                            ProductCountrycode = cncoode.Trim()
                         };
 
                         _context.Products.Add(product);
                         _context.Classifieds.Add(classified);
                         _context.Sales.Add(salejp);
                         _context.Sales.Add(saletw);
+                        _context.Sales.Add(salecn);
                         _context.SaveChanges();
                         ViewData["Title"] = "新增成功";
                         ViewData["Message"] = "新增產品成功!";
@@ -338,8 +393,6 @@ namespace CrossBorder.Controllers
                         return View("~/Views/Shared/ResultMessage_true.cshtml");
 
                     }
-
-
                 }
                 ModelState.AddModelError(string.Empty, "產品id重複");
                 return View(AddPVM);
@@ -354,65 +407,88 @@ namespace CrossBorder.Controllers
 
         public IActionResult CustomerProductList()
         {
-            string username = User.Identity.Name;
-            var customer = (from data in _context.Customers
-                            where data.CusdtomerName.Trim() == username.Trim()
-                            select data).FirstOrDefault();
-            var cplist = (from data in _context.Shoppinglists
-                          where data.CustomerId.Trim() == customer.CustomerId.Trim()
-                          select data.ProductId).ToList();
+            //string username = User.Identity.Name;
+            //var customer = (from data in _context.Customers
+            //                where data.CusdtomerName.Trim() == username.Trim()
+            //                select data).FirstOrDefault();
+            //var cplist = (from data in _context.Shoppinglists
+            //              where data.CustomerId.Trim() == customer.CustomerId.Trim()
+            //              select data.ProductId).ToList(); 舊程式碼
 
+            string username = User.Identity.Name;
+            var customer = _context.Customers.FirstOrDefault(data => data.CusdtomerName.Trim() == username.Trim());
+            var cplist = _context.Shoppinglists
+                .Where(data => data.CustomerId.Trim() == customer.CustomerId.Trim())
+                .Select(data => data.ProductId)
+                .ToList();
 
             var filteredList = _context.Products.Where(item => cplist.Contains(item.ProductId)).ToList();
-
             var filteredList2 = _context.Sales.Where(item => cplist.Contains(item.ProductId)).ToList();
             var result = filteredList2.GroupBy((x) => x.CountryId);
 
 
-            var currencyVMs = result.Select(group => new CurrencyViewModel
+            // 優化 currencyVMs 查詢
+            var countriesPrefix = _context.Countries.ToDictionary(data => data.CountryId, data => data.Prefix);
+            var countriesName = _context.Countries.ToDictionary(data => data.CountryId, data => data.CountryName);
+            var currencyVMs = result.Select(group =>
             {
-                //Price = group.Sum(item => item.Price) / Convert.ToDecimal((from data in _context.Countries
-                //                                                           where data.CountryId == @group.Key
-                //                                                           select data.Prefix).FirstOrDefault()),
-                Price = group.Sum(item =>
+                decimal prefix = countriesPrefix.TryGetValue(group.Key, out var p) ? decimal.Parse(p) : 1m;
+
+                decimal totalPrice = group.Sum(item =>
                 {
-                    var shoppinglist = _context.Shoppinglists
-                        .FirstOrDefault(sl => sl.ProductId == item.ProductId);
+                    var shoppinglist = _context.Shoppinglists.FirstOrDefault(sl => sl.ProductId == item.ProductId);
                     if (shoppinglist != null)
                     {
                         return item.Price * shoppinglist.Amount;
                     }
                     return 0;
-                }) / Convert.ToDecimal((from data in _context.Countries
-                                        where data.CountryId == @group.Key
-                                        select data.Prefix).FirstOrDefault()),
+                });
+                return new CurrencyViewModel
+                {
+                    Price = totalPrice / Convert.ToDecimal(prefix),
+                    Photo = countriesName.TryGetValue(group.Key, out var name) ? name : null
+                };
+            }).OrderBy(vm => vm.Price).ToList();
 
-                Photo = (from data in _context.Countries
-                         where data.CountryId == @group.Key
-                         select data.CountryName).FirstOrDefault()
-            }).ToList();
+
+            //var currencyVMs = result.Select(group => new CurrencyViewModel 舊程式
+            //{
+            //    Price = group.Sum(item =>
+            //    {
+            //        var shoppinglist = _context.Shoppinglists
+            //            .FirstOrDefault(sl => sl.ProductId == item.ProductId);
+            //        if (shoppinglist != null)
+            //        {
+            //            return item.Price * shoppinglist.Amount;
+            //        }
+            //        return 0;
+            //    }) / Convert.ToDecimal((from data in _context.Countries
+            //                            where data.CountryId == @group.Key
+            //                            select data.Prefix).FirstOrDefault()),
+
+            //    Photo = (from data in _context.Countries
+            //             where data.CountryId == @group.Key
+            //             select data.CountryName).FirstOrDefault()
+            //}).ToList();
+
+
 
             var productinfoVMs = filteredList.Select(group => new ProductinfoViewModel
             {
                 Products = group,
                 Amount = (from data in _context.Shoppinglists
-                         where data.ProductId == @group.ProductId
-                         select data.Amount).FirstOrDefault(),
+                          where data.ProductId == @group.ProductId
+                          select data.Amount).FirstOrDefault(),
 
                 Price = (from data in _context.Sales
-                         where data.ProductId == @group.ProductId && data.CountryId =="TW"
-                         select data.Price*(
+                         where data.ProductId == @group.ProductId && data.CountryId == "TW"
+                         select data.Price * (
                          from amount in _context.Shoppinglists
                          where amount.ProductId == @group.ProductId
                          select amount.Amount
                          ).FirstOrDefault()).FirstOrDefault()
-
             }).ToList();
 
-
-            //(from item in groupedData
-            // from sale in item.Product.Shoppinglists
-            // select item.Price * sale.Amount).Sum()
 
 
 

@@ -4,6 +4,8 @@ using System;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using AngleSharp;
+using System.Collections.Generic;
 
 namespace CrossBorder.MyClass
 {
@@ -65,6 +67,114 @@ namespace CrossBorder.MyClass
                 }
             }
         }
+        public static decimal GetConversionRate(string url, string selector ,string selector2)
+        {
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
+
+            var config = Configuration.Default.WithDefaultLoader();
+            var context = BrowsingContext.New(config);
+
+            var responseMessage = httpClient.GetAsync(url).Result;
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string responseResult = responseMessage.Content.ReadAsStringAsync().Result;
+                var document = context.OpenAsync(res => res.Content(responseResult)).Result;
+                var element = document.QuerySelector(selector);
+                var element2 = document.QuerySelector(selector2);
+
+                decimal value = Convert.ToDecimal(element.TextContent)/Convert.ToDecimal(element2.TextContent);
+                return value;
+            }
+
+            return 0;
+        }
+        //public static (string, string) Getjpdata(string _productid)
+        //{
+
+        //    string jptruecoode = "";
+        //    string jpprice = "0";
+
+        //    var httpClient = new HttpClient();
+        //    httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
+        //    var config = Configuration.Default.WithDefaultLoader();
+        //    var context = BrowsingContext.New(config);
+
+        //    string searchjp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products?q=" + _productid + "&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true";
+        //    var responseMessagejps = httpClient.GetAsync(searchjp).Result;
+        //    if (responseMessagejps.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        string responseResultjps = responseMessagejps.Content.ReadAsStringAsync().Result;
+        //        dynamic jpdatas = JsonConvert.DeserializeObject(responseResultjps);
+        //        if (jpdatas.result.items.Count <= 0)
+        //        {
+        //            return ("0","");
+        //        }
+        //        else
+        //        {
+        //            jptruecoode = jpdatas.result.items[0].productId;
+        //        }
+        //    }
+        //    string urljp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products/" + jptruecoode + "/price-groups/00/l2s?withPrices=true&withStocks=true&httpFailure=true";
+        //    var responseMessagejp = httpClient.GetAsync(urljp).Result;
+        //    if (responseMessagejp.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        string responseResultjp = responseMessagejp.Content.ReadAsStringAsync().Result;
+        //        dynamic jpdata = JsonConvert.DeserializeObject(responseResultjp);
+        //        string jpcoode = jpdata.result.l2s[0].l2Id;
+        //        jpprice = jpdata.result.prices[jpcoode]["base"].value;
+        //    }
+        //    return (jptruecoode,jpprice);
+        //}
+        public static List<string> Getjpdata(string _productid)
+        {
+            List<string> resultList = new List<string>();
+
+            string jptruecoode = "";
+            string jpprice = "0";
+
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
+            var config = Configuration.Default.WithDefaultLoader();
+            var context = BrowsingContext.New(config);
+
+            string searchjp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products?q=" + _productid + "&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true";
+            var responseMessagejps = httpClient.GetAsync(searchjp).Result;
+            if (responseMessagejps.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string responseResultjps = responseMessagejps.Content.ReadAsStringAsync().Result;
+                dynamic jpdatas = JsonConvert.DeserializeObject(responseResultjps);
+                if (jpdatas.result.items.Count <= 0)
+                {
+                    resultList.Add("0");
+                    resultList.Add("");
+                    return resultList;
+                }
+                else
+                {
+                    jptruecoode = jpdatas.result.items[0].productId;
+                }
+            }
+
+            string urljp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products/" + jptruecoode + "/price-groups/00/l2s?withPrices=true&withStocks=true&httpFailure=true";
+            var responseMessagejp = httpClient.GetAsync(urljp).Result;
+            if (responseMessagejp.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string responseResultjp = responseMessagejp.Content.ReadAsStringAsync().Result;
+                dynamic jpdata = JsonConvert.DeserializeObject(responseResultjp);
+                string jpcoode = jpdata.result.l2s[0].l2Id;
+                jpprice = jpdata.result.prices[jpcoode]["base"].value;
+            }
+
+            resultList.Add(jptruecoode);
+            resultList.Add(jpprice);
+            return resultList;
+        }
+
+
+
+
+
 
 
 

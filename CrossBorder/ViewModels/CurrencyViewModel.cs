@@ -12,6 +12,8 @@ namespace cross_border.ViewModels
         public decimal Price { get; set; }
         [Required]
         public string Photo { get; set; }
+        [Required]
+        public string code { get; set; }
 
     }
 }

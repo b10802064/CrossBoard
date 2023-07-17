@@ -3,14 +3,16 @@ using CrossBorder.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CrossBorder.Migrations
 {
     [DbContext(typeof(Cross_BorderContext))]
-    partial class Cross_BorderContextModelSnapshot : ModelSnapshot
+    [Migration("20230712082316_AddCNID")]
+    partial class AddCNID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

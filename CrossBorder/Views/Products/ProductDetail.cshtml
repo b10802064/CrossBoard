@@ -5,8 +5,31 @@
 <div class="productdetails_2">
     <div class="productdetails">
         <div class="productdetailsimage">
-
-            <img src="@Model.Products.Photo" alt="Image">
+            @if (!string.IsNullOrEmpty(Model.Products.Photo2))
+            {
+                <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                    <div class="carousel-inner " style="height:auto">
+                        <div class="carousel-item active" style="padding-top:0">
+                            <img src="@Model.Products.Photo" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item " style="padding-top:0">
+                            <img src="@Model.Products.Photo2" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <img src="@Model.Products.Photo" alt="Image">
+            }
         </div>
         <div class="productdetailstext ">
             <h2>
@@ -40,8 +63,14 @@
                     </div>
                 </div>
             </div>*@
-            <a asp-controller="Products" asp-action="AddProductlist" asp-route-id="@Model.Products.ProductId" class="btn">加入比價清單</a>
-
+@*            <div class="d-flex">
+                <a href="https://www.uniqlo.com/tw/zh_TW/product-detail.html?productCode=@Model.Products.ProductId.Trim()" class="btn me-3">台灣商品網站</a>
+                <a href="https://www.uniqlo.com/jp/ja/products/E460672-000/00?colorDisplayCode=66&sizeDisplayCode=120" class="btn ">商品網站</a>
+                
+            </div>*@
+            <div class="buttona">
+                <a asp-controller="Products" asp-action="AddProductlist" asp-route-id="@Model.Products.ProductId" class="btn">加入比價清單</a>
+            </div>
         </div>
     </div>
 </div>

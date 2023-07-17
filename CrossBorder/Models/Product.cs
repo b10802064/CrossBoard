@@ -15,9 +15,13 @@ namespace CrossBorder.Models
         }
 
         public string ProductId { get; set; }
+        public string ProductJP { get; set; }
+        public string ProductCN { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Photo { get; set; }
+        public string Photo2 { get; set; }
+
 
         public virtual ICollection<Classified> Classifieds { get; set; }
         public virtual ICollection<Sale> Sales { get; set; }

@@ -5,7 +5,31 @@
 <div class="card">
     <img src="@Model.Photo" class="card-img-top" alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">各國價格</h5>
-        <p class="card-text">$@Model.Price</p>
+        @if (Model.Photo.Trim() == "https://s.yimg.com/ob/image/855765d5-e566-4780-887a-e1948e61a223.jpg")
+        {
+            <h5 class="card-title">日本價格</h5>
+        }
+        else if (Model.Photo.Trim() == "https://www.president.gov.tw/images/president/flag.jpg")
+        {
+            <h5 class="card-title">台灣價格</h5>
+        }
+        else if (Model.Photo.Trim() == "https://www.gov.cn/guoqing/site1/20100928/001aa04acfdf0e0bfb6401.gif")
+        {
+            <h5 class="card-title">中國價格</h5>
+        }
+
+        <p class="card-text">$@Model.Price.ToString("0.####")</p>
+        @if (Model.Photo.Trim() == "https://s.yimg.com/ob/image/855765d5-e566-4780-887a-e1948e61a223.jpg")
+        {
+            <a href="https://www.uniqlo.com/jp/ja/products/@Model.code.Trim()/00" class="btn ">日本商品網站</a>
+        }
+        else if (Model.Photo.Trim() == "https://www.president.gov.tw/images/president/flag.jpg")
+        {
+            <a href="https://www.uniqlo.com/tw/zh_TW/product-detail.html?productCode=@Model.code.Trim()" class="btn me-3">台灣商品網站</a>
+        }
+        else if (Model.Photo.Trim() == "https://www.gov.cn/guoqing/site1/20100928/001aa04acfdf0e0bfb6401.gif")
+        {
+            <a href="https://www.uniqlo.cn/product-detail.html?productCode=@Model.code.Trim()" class="btn me-3">中國商品網站</a>
+        }
     </div>
 </div>
