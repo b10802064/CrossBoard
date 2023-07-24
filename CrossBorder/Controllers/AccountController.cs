@@ -17,6 +17,7 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using CrossBorder.MyClass;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace cross_border.Controllers
 {
@@ -41,6 +42,7 @@ namespace cross_border.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
+            
             if (ModelState.IsValid)
             {
                 // 驗證使用者帳密
@@ -125,8 +127,9 @@ namespace cross_border.Controllers
 
         //註冊帳號
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string? userid)
         {
+            ViewData["userid"] = userid;
             return View();
         }
 
@@ -136,8 +139,7 @@ namespace cross_border.Controllers
         {
             if (ModelState.IsValid)
             {
-                Random random = new Random();
-
+                //Random random = new Random();
                 // 生成四個隨機數字
                 //string number1 = random.Next().ToString();
                 //string number2 = random.Next().ToString();
@@ -145,12 +147,14 @@ namespace cross_border.Controllers
                 //string number4 = random.Next().ToString();
                 //string number5 = number1 + number2 + number3 + number4;
                 //ViewModel => Data Model
+
                 Customer user = new Customer
                 {
                     CustomerId = Guid.NewGuid().ToString(),
                     CusdtomerName = registerVM.UserName,
                     Password = registerVM.Password,
                     Email = registerVM.Email,
+                    lineid = registerVM.lineid
                 };
                 //Send_eMail(registerVM.Email, "測試", "驗證碼:"+ number5);
                 Net.LineNotify("有帳號註冊 :\n"+ registerVM.UserName);
@@ -161,6 +165,14 @@ namespace cross_border.Controllers
 
                 return View("~/Views/Shared/ResultMessage_true.cshtml");
             }
+            else 
+            {
+                // 模型验证失败，检查验证错误信息
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                // 在调试或记录错误时使用
+
+            }
+
 
             return View(registerVM);
         }
@@ -273,6 +285,8 @@ namespace cross_border.Controllers
             // 驗證失敗，返回編輯視圖顯示驗證錯誤信息
             return View(customer);
         }
+
+
     }
 
 

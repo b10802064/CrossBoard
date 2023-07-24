@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using AngleSharp;
 using System.Collections.Generic;
+using CrossBorder.Models;
+using System.Linq;
 
 namespace CrossBorder.MyClass
 {
@@ -15,6 +17,36 @@ namespace CrossBorder.MyClass
         {
             string url = "http://125.229.21.105/Line/LineAPI.php?Token=" + _token + "&Message=%F0%9F%94%94" + _massage;
 
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    await client.GetAsync(url);  // 发送 HTTP 请求并等待完成
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        
+        //public static async Task sendLineMessage(string _id = "Uc120036fb20e6a930c198cb843aa75a6", string _message = "第10組跨境電商")
+        //{
+        //    string url = "https://script.google.com/macros/s/AKfycbzAyp4HE-Ki_PCGfzbcXrS6PSTSl7qarrEbPN_qhh-5O5qTus0Qi73ATCn6QQzj30-C/exec?userID=" + _id + "&text=" + _message + "&imageUrl=https://images.chinatimes.com/newsphoto/2021-11-17/1024/20211117004544.jpg&previewImageUrl=https://images.chinatimes.com/newsphoto/2021-11-17/1024/20211117004544.jpg";
+        //    try
+        //    {
+        //        using (HttpClient client = new HttpClient())
+        //        {
+        //            await client.GetAsync(url);  // 发送 HTTP 请求并等待完成
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
+
+        public static async Task sendLineMessage(string GettMsg )
+        {
+            string url = "https://script.google.com/macros/s/AKfycbxu6AA55bCDsBqTmBsXyUnZcrte5-pb_MPWwpsaV134U24XPOGR6wVMslNXoNi5yfPY/exec" +  GettMsg;
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -173,7 +205,13 @@ namespace CrossBorder.MyClass
 
 
 
-
+        public static List<Product> RandomProduct(List<Product> products,int amount)
+        {
+            var random = new Random();
+            var randomIndexes = Enumerable.Range(0, products.Count()).OrderBy(x => random.Next()).Take(amount);
+            var randomProducts = randomIndexes.Select(index => products[index]).ToList();
+            return randomProducts;
+        }
 
 
 

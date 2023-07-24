@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrossBorder.Models;
+using System;
 using System.Collections.Generic;
 
 #nullable disable

@@ -10,6 +10,7 @@ namespace cross_border.ViewModels
         public int Verificationcode { get; set; }
         [Required]
         public string UserName { get; set; }
+        public string? lineid { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]

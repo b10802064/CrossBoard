@@ -16,6 +16,7 @@ namespace CrossBorder.Models
         public string CusdtomerName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string? lineid { get; set; }
 
         public virtual ICollection<Shoppinglist> Shoppinglists { get; set; }
     }

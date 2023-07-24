@@ -2,12 +2,13 @@
 
 @{
     ViewData["Title"] = "Register";
-
+    string userid = (string)ViewData["userid"];
 }
 
 <div class="login-container">
     <h2><i class="fas fa-lock"></i>註冊</h2>
-    <form asp-action="Register">
+    <form asp-action="Register" asp-method="post">
+        <input asp-for="lineid" type="hidden" value="@userid" required>
         <input asp-for="UserName" type="text" placeholder="帳號" required><br>
         <input asp-for="Email" type="text" placeholder="信箱" required><br>
         <input asp-for="Password" type="password" placeholder="密碼" required><br>

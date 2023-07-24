@@ -1,8 +1,10 @@
-﻿@model IEnumerable<Product>
+﻿@model cross_border.ViewModels.IndexViewModel
+
 
 @{
     ViewData["Title"] = "Home Page";
 }
+
 
 <div class="carouselbox d-flex justify-content-center border-dark  mb-5">
     <div id="carouselExample" class="carousel slide w-75 " data-bs-ride="carousel">
@@ -48,9 +50,9 @@
         </div>
         <div class="row">
             
-            @foreach (var man in Model)
+            @foreach (var man in Model.Products)
             {
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
                 @await Html.PartialAsync("_CardPartial", man)
                 </div>
             }
@@ -61,13 +63,67 @@
 <div class="areasize">
     <div class="area">
         <div class="row">
-            <p class="title">新品上架</p>
+            <p class="title">男裝專區</p>
         </div>
         <div class="row">
             
-            @foreach (var man in Model)
+            @foreach (var man in Model.Productsman)
             {
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                @await Html.PartialAsync("_CardPartial", man)
+                </div>
+            }
+            
+        </div>
+
+    </div>
+</div>
+<div class="areasize">
+    <div class="area">
+        <div class="row">
+            <p class="title">女裝專區</p>
+        </div>
+        <div class="row">
+            
+            @foreach (var man in Model.Productswoman)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                @await Html.PartialAsync("_CardPartial", man)
+                </div>
+            }
+            
+        </div>
+
+    </div>
+</div>
+<div class="areasize">
+    <div class="area">
+        <div class="row">
+            <p class="title">童裝專區</p>
+        </div>
+        <div class="row">
+            
+            @foreach (var man in Model.Productskid)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                @await Html.PartialAsync("_CardPartial", man)
+                </div>
+            }
+            
+        </div>
+
+    </div>
+</div>
+<div class="areasize">
+    <div class="area">
+        <div class="row">
+            <p class="title">幼兒專區</p>
+        </div>
+        <div class="row">
+            
+            @foreach (var man in Model.Productsbaby)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
                 @await Html.PartialAsync("_CardPartial", man)
                 </div>
             }
