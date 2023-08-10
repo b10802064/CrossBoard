@@ -284,12 +284,12 @@ namespace CrossBorder.Controllers
                     jptruecoode = resultList[0];
                     jpprice = resultList[1];
 
-                    if (jptruecoode == "")
-                    {
-                        ViewData["Title"] = "新增失敗";
-                        ViewData["Message"] = "日本無此商品!";
-                        return View("~/Views/Shared/ResultMessage_true.cshtml");
-                    }
+                    //if (jptruecoode == "")
+                    //{
+                    //    ViewData["Title"] = "新增失敗";
+                    //    ViewData["Message"] = "日本無此商品!";
+                    //    return View("~/Views/Shared/ResultMessage_true.cshtml");
+                    //}
 
 
                     //string searchjp = "https://www.uniqlo.com/jp/api/commerce/v5/ja/products?q=" + jpurlcode + "&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true";
@@ -327,12 +327,12 @@ namespace CrossBorder.Controllers
                     var chinesers = Net.SendRequest(jpurlcode);
                     dynamic chinesedata = JsonConvert.DeserializeObject(chinesers);
 
-                    if(chinesedata.resp[1].Count == 0)
-                    {
-                        ViewData["Title"] = "新增失敗";
-                        ViewData["Message"] = "中國無此商品!";
-                        return View("~/Views/Shared/ResultMessage_true.cshtml");
-                    }
+                    //if (chinesedata.resp[1].Count == 0)
+                    //{
+                    //    ViewData["Title"] = "新增失敗";
+                    //    ViewData["Message"] = "中國無此商品!";
+                    //    return View("~/Views/Shared/ResultMessage_true.cshtml");
+                    //}
                     string cncoode = chinesedata.resp[1][0].productCode;
                     cnprice = chinesedata.resp[1][0].prices[0];
                     if (type == "女童")

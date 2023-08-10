@@ -178,8 +178,8 @@ namespace CrossBorder.MyClass
                 dynamic jpdatas = JsonConvert.DeserializeObject(responseResultjps);
                 if (jpdatas.result.items.Count <= 0)
                 {
-                    resultList.Add("0");
                     resultList.Add("");
+                    resultList.Add("0");
                     return resultList;
                 }
                 else
